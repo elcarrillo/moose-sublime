@@ -1,14 +1,14 @@
 # Setup Notes
 
-practical notes for getting the MOOSE Sublime setup working
+Practical notes for getting the MOOSE Sublime setup working
 
-## where the Sublime user files live on Mac
+## Where the Sublime user files live on Mac
 
 the Sublime user package folder is
 
     ~/Library/Application Support/Sublime Text/Packages/User/
 
-the Library folder is hidden by default on Mac
+The Library folder is hidden by default on Mac
 
 in Finder press
 
@@ -18,13 +18,13 @@ then paste
 
     ~/Library/Application Support/Sublime Text/Packages/User/
 
-the main files from this repo that go there are
+The main files from this repo that go there are
 
     MOOSE.sublime-syntax
     MOOSE-Comments.tmPreferences
     MOOSE.sublime-settings
 
-## syntax highlighting
+## Syntax highlighting
 
 MOOSE.sublime-syntax handles the MOOSE input file scopes
 
@@ -70,15 +70,15 @@ open
 
 Sublime opens two panels
 
-the left panel is the default color scheme
+The left panel is the default color scheme
 
 DO NOT EDIT THE LEFT PANEL
 
-the right panel is your user override
+The right panel is your user override
 
 EDIT THE RIGHT PANEL
 
-inside the "rules" array you can add MOOSE specific color rules
+Inside the "rules" array, you can add MOOSE-specific color rules
 
 for example
 
@@ -105,7 +105,7 @@ not
     }
     {
 
-the example color scheme in this repo is
+The example color scheme in this repo is
 
     examples/MOOSE-color-scheme.example.sublime-color-scheme
 
@@ -143,9 +143,6 @@ for a custom MOOSE app use that app executable instead
 
 using the custom app executable lets the language server recognize objects registered by that app
 
-do not publish your personal absolute path in the repo
-
-use placeholders in public examples
 
 ## hover documentation
 
@@ -192,9 +189,9 @@ and run
 
     sublime.active_window().settings().set("lsp_show_hover_popups", True)
 
-then move the mouse over a valid MOOSE parameter or value
+Then move the mouse over a valid MOOSE parameter or value
 
-## checking the LSP log
+## Checking the LSP log
 
 to see communication between Sublime and the MOOSE language server use
 
@@ -210,7 +207,7 @@ useful messages include
 if autocomplete and diagnostics work but hover does not
 test manual lsp_hover before changing other settings
 
-## custom MOOSE apps and main.C
+## Custom MOOSE apps and main.C
 
 older custom MOOSE apps may still use the deprecated AppFactory::createAppShared setup in main.C
 
@@ -227,11 +224,11 @@ example
       return Moose::main<MyApp>(argc, argv);
     }
 
-changing main.C requires rebuilding the custom app executable
+Changing main.C requires rebuilding the custom app executable
 
 ## Mac duplicate LC_RPATH issue
 
-a rebuilt MOOSE app on Mac can sometimes fail with
+A rebuilt MOOSE app on Mac can sometimes fail with
 
     duplicate LC_RPATH
 
@@ -239,7 +236,7 @@ check the executable with
 
     otool -l ./your-app-opt | awk '/LC_RPATH/{getline; getline; print $2}' | sort | uniq -c
 
-if the Conda lib path appears more than once
+If the Conda lib path appears more than once
 remove duplicates until only one remains
 
     while [ "$(otool -l ./your-app-opt | awk '/LC_RPATH/{getline; getline; print $2}' | grep -Fx "$CONDA_PREFIX/lib" | wc -l)" -gt 1 ]; do
@@ -276,7 +273,7 @@ and check it
 
 ## quick debugging
 
-if something looks wrong visually
+If something looks wrong visually
 
     check the scope first
 
