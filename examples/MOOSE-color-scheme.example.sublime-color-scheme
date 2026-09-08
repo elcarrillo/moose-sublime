@@ -17,6 +17,11 @@
             "name": "MOOSE block headers",
             "scope": "source.moose entity.name.section.moose",
             "foreground": "#82AAFF"
+        },
+        {
+            "name": "MOOSE include directive",
+            "scope": "source.moose keyword.control.include.moose",
+            "foreground": "#89DDFF"
         }
     ]
 }
