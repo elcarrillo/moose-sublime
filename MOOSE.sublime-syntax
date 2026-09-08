@@ -1,0 +1,166 @@
+%YAML 1.2
+---
+name: MOOSE Input
+file_extensions:
+  - i
+scope: source.moose
+
+contexts:
+  main:
+    # Comments
+    - match: '#.*$'
+      scope: comment.line.number-sign.moose
+
+    # MOOSE include directive
+    - match: '^\s*(!include)\b'
+      captures:
+        1: keyword.control.include.moose
+      push: include-path
+
+    # Deprecated block close syntax
+    - match: '^\s*(\[)(\.\./)(\])'
+      captures:
+        1: punctuation.definition.section.begin.moose
+        2: keyword.control.deprecated.moose
+        3: punctuation.definition.section.end.moose
+
+    # Block close
+    - match: '^\s*(\[)(\])'
+      captures:
+        1: punctuation.definition.section.begin.moose
+        2: punctuation.definition.section.end.moose
+
+    # Block / subblock names
+    - match: '^\s*(\[)([^\]\r\n]+)(\])'
+      captures:
+        1: punctuation.definition.section.begin.moose
+        2: entity.name.section.moose
+        3: punctuation.definition.section.end.moose
+
+    # type = SomeMooseObject
+    - match: '^\s*(type)(\s*)(:override=|:=|=)'
+      captures:
+        1: support.type.property-name.moose
+        3: keyword.operator.assignment.moose
+      push: type-value
+
+    # General parameter assignment
+    - match: '^\s*([A-Za-z_][A-Za-z0-9_.:-]*)(\s*)(:override=|:=|=)'
+      captures:
+        1: support.type.property-name.moose
+        3: keyword.operator.assignment.moose
+      push: value
+
+  include-path:
+    - meta_scope: string.unquoted.include-path.moose
+    - match: '#.*$'
+      scope: comment.line.number-sign.moose
+      pop: true
+    - match: '$'
+      pop: true
+
+  type-value:
+    - meta_scope: meta.value.moose
+    - match: '#.*$'
+      scope: comment.line.number-sign.moose
+      pop: true
+    - match: '\$\{'
+      scope: punctuation.section.interpolation.begin.moose
+      push: brace-expression
+    - match: "'"
+      scope: punctuation.definition.string.begin.moose
+      push: single-quoted-string
+    - match: '"'
+      scope: punctuation.definition.string.begin.moose
+      push: double-quoted-string
+    - match: '\b[A-Za-z_][A-Za-z0-9_:]*\b'
+      scope: entity.name.type.class.moose
+    - match: '$'
+      pop: true
+
+  value:
+    - meta_scope: meta.value.moose
+
+    # Inline comments
+    - match: '#.*$'
+      scope: comment.line.number-sign.moose
+      pop: true
+
+    # Brace expressions such as ${fparse ...}, ${units ...}, ${name}
+    - match: '\$\{'
+      scope: punctuation.section.interpolation.begin.moose
+      push: brace-expression
+
+    # Quoted values and vectors
+    - match: "'"
+      scope: punctuation.definition.string.begin.moose
+      push: single-quoted-string
+    - match: '"'
+      scope: punctuation.definition.string.begin.moose
+      push: double-quoted-string
+
+    # Booleans
+    - match: '(?i:\b(?:true|false|on|off)\b)'
+      scope: constant.language.boolean.moose
+
+    # Common execute_on values
+    - match: '\b(?:INITIAL|TIMESTEP_BEGIN|TIMESTEP_END|FINAL|LINEAR|NONLINEAR|ALWAYS)\b'
+      scope: constant.language.execution-flag.moose
+
+    # Numbers, including scientific notation
+    - match: '(?<![A-Za-z_])[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?'
+      scope: constant.numeric.integer.moose
+
+    # Operators / delimiters commonly seen in values
+    - match: '->|[|;,+*/^()-]'
+      scope: keyword.operator.moose
+
+    # Unquoted values
+    - match: '\b[A-Za-z_][A-Za-z0-9_./:-]*\b'
+      scope: string.unquoted.moose
+
+    - match: '$'
+      pop: true
+
+  single-quoted-string:
+    - meta_scope: string.quoted.single.moose
+    - match: '\$\{'
+      scope: punctuation.section.interpolation.begin.moose
+      push: brace-expression
+    - match: "'"
+      scope: punctuation.definition.string.end.moose
+      pop: true
+
+  double-quoted-string:
+    - meta_scope: string.quoted.double.moose
+    - match: '\$\{'
+      scope: punctuation.section.interpolation.begin.moose
+      push: brace-expression
+    - match: '"'
+      scope: punctuation.definition.string.end.moose
+      pop: true
+
+  brace-expression:
+    - meta_scope: meta.interpolation.moose
+
+    # Nested brace expression
+    - match: '\$\{'
+      scope: punctuation.section.interpolation.begin.moose
+      push: brace-expression
+
+    - match: '\}'
+      scope: punctuation.section.interpolation.end.moose
+      pop: true
+
+    # Built-in MOOSE brace commands
+    - match: '\b(?:replace|raw|env|fparse|units)\b'
+      scope: support.function.builtin.moose
+
+    - match: '->|[+\-*/^(),]'
+      scope: keyword.operator.moose
+
+    - match: '(?<![A-Za-z_])[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?'
+      scope: constant.numeric.integer.moose
+
+    - match: '\b[A-Za-z_][A-Za-z0-9_./:-]*\b'
+      scope: variable.other.moose
