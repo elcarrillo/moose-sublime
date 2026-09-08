@@ -1,0 +1,11 @@
+{
+    "moose": {
+        "enabled": true,
+        "command": [
+            "/path/to/your/moose-app-opt",
+            "--language-server"
+        ],
+        "selector": "source.moose",
+        "diagnostics_mode": "all_files"
+    }
+}
