@@ -1,0 +1,22 @@
+// Optional MOOSE-specific color overrides for Sublime Text
+{
+    "variables":
+    {
+    },
+    "globals":
+    {
+    },
+    "rules":
+    [
+        {
+            "name": "MOOSE integers",
+            "scope": "source.moose constant.numeric.integer.moose",
+            "foreground": "#C792EA"
+        },
+        {
+            "name": "MOOSE block headers",
+            "scope": "source.moose entity.name.section.moose",
+            "foreground": "#82AAFF"
+        }
+    ]
+}
