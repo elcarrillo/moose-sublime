@@ -3,8 +3,9 @@
         "caption": "Preferences: MOOSE Settings",
         "command": "edit_settings",
         "args": {
-            "base_file": "${packages}/MOOSE/MOOSE.sublime-settings",
-            "default": "// MOOSE user settings\n{\n\t$0\n}\n"
+            "base_file": "${packages}/Default/Preferences.sublime-settings",
+            "user_file": "${packages}/User/MOOSE.sublime-settings",
+            "default": "// MOOSE syntax-specific settings\n{\n\t$0\n}\n"
         }
     }
 ]
